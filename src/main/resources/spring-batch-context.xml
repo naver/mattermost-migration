@@ -1,0 +1,504 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
+	   xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+						   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+	<import resource="classpath:context-datasource.xml"/>
+
+	<!-- JobRepository and JobLauncher are configuration/setup classes -->
+	<bean id="jobRepository"
+		  class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean"/>
+
+	<bean id="jobLauncher"
+		  class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository"/>
+	</bean>
+
+	<bean id="databaseItemReaderAudits"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${audit.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Audits"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterAudits" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${audit.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+
+	<bean id="databaseItemReaderChannelMembers"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${channelMembers.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.ChannelMembers"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterChannelMembers" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${channelMembers.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderChannels"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${channels.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Channels"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterChannels" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${channels.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderCommands"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${commands.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Commands"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterCommands" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${commands.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderCompliances"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${compliances.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Compliances"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterCompliances" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${compliances.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderIncomingWebhooks"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${incomingWebhooks.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.IncomingWebhooks"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterIncomingWebhooks" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${incomingWebhooks.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderLicenses"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${licenses.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Licenses"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterLicenses" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${licenses.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderOAuthAccessData"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${OAuthAccessData.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.OAuthAccessData"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterOAuthAccessData" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${OAuthAccessData.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderOAuthApps"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${OAuthApps.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.OAuthApps"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterOAuthApps" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${OAuthApps.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderOAuthAuthData"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${OAuthAuthData.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.OAuthAuthData"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterOAuthAuthData" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${OAuthAuthData.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderOutgoingWebhooks"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${OutgoingWebhooks.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.OutgoingWebhooks"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterOutgoingWebhooks" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${OutgoingWebhooks.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderPasswordRecovery"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${PasswordRecovery.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.PasswordRecovery"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterPasswordRecovery" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${PasswordRecovery.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderPosts"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Posts.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Posts"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterPosts" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Posts.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderPreferences"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Preferences.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Preferences"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterPreferences" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Preferences.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderSessions"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Sessions.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Sessions"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterSessions" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Sessions.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderSystems"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Systems.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Systems"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterSystems" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Systems.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderTeamMembers"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${TeamMembers.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.TeamMembers"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterTeamMembers" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${TeamMembers.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderTeams"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Teams.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Teams"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterTeams" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Teams.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<bean id="databaseItemReaderUsers"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Users.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Users"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterUsers" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Users.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
+	<!-- Optional JobExecutionListener to perform business logic before and after the job -->
+	<bean id="jobListener" class="com.navercorp.mattermost.migration.joblistener.MigrationJobListener"/>
+
+	<!-- Step will need a transaction manager -->
+	<bean id="transactionManager"
+		  class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+
+	<!-- Actual Job -->
+	<batch:job id="migrationJob">
+		<batch:step id="migrateAudits" next="migrateChannelMembers">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderAudits" writer="databaseItemWriterAudits"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateChannelMembers" next="migrateChannels">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderChannelMembers" writer="databaseItemWriterChannelMembers"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateChannels" next="migrateCommands">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderChannels" writer="databaseItemWriterChannels"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateCommands" next="migrateCompliances">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderCommands" writer="databaseItemWriterCommands"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateCompliances" next="migrateIncomingWebhooks">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderCompliances" writer="databaseItemWriterCompliances"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateIncomingWebhooks" next="migrateLicenses">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderIncomingWebhooks" writer="databaseItemWriterIncomingWebhooks"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateLicenses" next="migrateOAuthAccessData">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderLicenses" writer="databaseItemWriterLicenses"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateOAuthAccessData" next="migrateOAuthApps">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderOAuthAccessData" writer="databaseItemWriterOAuthAccessData"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateOAuthApps" next="migrateOAuthAuthData">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderOAuthApps" writer="databaseItemWriterOAuthApps"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateOAuthAuthData" next="migrateOutgoingWebhooks">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderOAuthAuthData" writer="databaseItemWriterOAuthAuthData"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateOutgoingWebhooks" next="migratePasswordRecovery">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderOutgoingWebhooks" writer="databaseItemWriterOutgoingWebhooks"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migratePasswordRecovery" next="migratePosts">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderPasswordRecovery" writer="databaseItemWriterPasswordRecovery"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migratePosts" next="migratePreferences">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderPosts" writer="databaseItemWriterPosts" commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migratePreferences" next="migrateSessions">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderPreferences" writer="databaseItemWriterPreferences"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateSessions" next="migrateSystems">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderSessions" writer="databaseItemWriterSessions"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateSystems" next="migrateTeamMembers">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderSystems" writer="databaseItemWriterSystems"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateTeamMembers" next="migrateTeams">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderTeamMembers" writer="databaseItemWriterTeamMembers"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateTeams" next="migrateUsers">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderTeams" writer="databaseItemWriterTeams" commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateUsers">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderUsers" writer="databaseItemWriterUsers" commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:listeners>
+			<batch:listener ref="jobListener"/>
+		</batch:listeners>
+	</batch:job>
+
+</beans>

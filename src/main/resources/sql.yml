@@ -1,0 +1,422 @@
+audit:
+  selection:
+    SELECT * FROM Audits
+  insertion:
+    INSERT INTO Audits
+      (Id,
+      CreateAt,
+      UserId,
+      Action,
+      ExtraInfo,
+      IpAddress,
+      SessionId)
+    VALUES
+      (:id, :createat, :userid, :action, :extrainfo, :ipaddress, :sessionid)
+channelMembers:
+  selection:
+    SELECT * FROM ChannelMembers
+  insertion:
+    INSERT INTO ChannelMembers
+      (channelid, userid, roles, lastviewedat, msgcount, mentioncount, notifyprops, lastupdateat)
+    VALUES
+      (:channelid, :userid, :roles, :lastviewedat, :msgcount, :mentioncount, :notifyprops, :lastupdateat)
+channels:
+  selection:
+    SELECT * FROM Channels
+  insertion:
+    INSERT INTO Channels
+      (id,
+      createat,
+      updateat,
+      deleteat,
+      teamid,
+      type,
+      displayname,
+      name,
+      header,
+      purpose,
+      lastpostat,
+      totalmsgcount,
+      extraupdateat,
+      creatorid)
+    VALUES
+      (:id,
+      :createat,
+      :updateat,
+      :deleteat,
+      :teamid,
+      :type,
+      :displayname,
+      :name,
+      :header,
+      :purpose,
+      :lastpostat,
+      :totalmsgcount,
+      :extraupdateat,
+      :creatorid)
+commands:
+  selection:
+    SELECT * FROM Commands
+  insertion:
+    INSERT INTO Commands
+      (Id,
+      Token,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      CreatorId,
+      TeamId,
+      ${database.target.escape_char}Trigger${database.target.escape_char},
+      Method,
+      Username,
+      IconURL,
+      AutoComplete,
+      AutoCompleteDesc,
+      AutoCompleteHint,
+      DisplayName,
+      Description,
+      URL)
+    VALUES
+      (:Id,
+      :Token,
+      :CreateAt,
+      :UpdateAt,
+      :DeleteAt,
+      :CreatorId,
+      :TeamId,
+      :Trigger,
+      :Method,
+      :Username,
+      :IconURL,
+      :AutoComplete,
+      :AutoCompleteDesc,
+      :AutoCompleteHint,
+      :DisplayName,
+      :Description,
+      :URL)
+compliances:
+  selection:
+    SELECT * FROM Compliances
+  insertion:
+    INSERT INTO Compliances
+      (Id,
+      CreateAt,
+      UserId,
+      Status,
+      Count,
+      Desc,
+      Type,
+      StartAt,
+      EndAt,
+      Keywords,
+      Emails)
+    VALUES
+      (:Id,
+      :CreateAt,
+      :UserId,
+      :Status,
+      :Count,
+      :Desc,
+      :Type,
+      :StartAt,
+      :EndAt,
+      :Keywords,
+      :Emails)
+incomingWebhooks:
+  selection:
+    SELECT * FROM IncomingWebhooks
+  insertion:
+    INSERT INTO IncomingWebhooks
+      (Id,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      UserId,
+      ChannelId,
+      TeamId,
+      DisplayName,
+      Description)
+    VALUES
+      (:Id,
+      :CreateAt,
+      :UpdateAt,
+      :DeleteAt,
+      :UserId,
+      :ChannelId,
+      :TeamId,
+      :DisplayName,
+      :Description)
+licenses:
+  selection:
+    SELECT * FROM Licenses
+  insertion:
+    INSERT INTO Licenses
+      (Id,
+      CreateAt,
+      Bytes)
+    VALUES
+      (:Id,
+      :CreateAt,
+      :Bytes)
+OAuthAccessData:
+  selection:
+    SELECT * FROM OAuthAccessData
+  insertion:
+    INSERT INTO OAuthAccessData
+      (AuthCode,
+      Token,
+      RefreshToken,
+      RedirectUri)
+    VALUES
+      (:AuthCode,
+      :Token,
+      :RefreshToken,
+      :RedirectUri)
+OAuthApps:
+  selection:
+    SELECT * FROM OAuthApps
+  insertion:
+    INSERT INTO OAuthApps
+      (Id,
+      CreatorId,
+      CreateAt,
+      UpdateAt,
+      ClientSecret,
+      Name,
+      Description,
+      CallbackUrls,
+      Homepage)
+    VALUES
+      (:Id,
+      :CreatorId,
+      :CreateAt,
+      :UpdateAt,
+      :ClientSecret,
+      :Name,
+      :Description,
+      :CallbackUrls,
+      :Homepage)
+OAuthAuthData:
+  selection:
+    SELECT * FROM OAuthAuthData
+  insertion:
+    INSERT INTO OAuthAuthData
+      (ClientId,
+      UserId,
+      Code,
+      ExpiresIn,
+      CreateAt,
+      RedirectUri,
+      State,
+      Scope)
+    VALUES
+      (:ClientId,
+      :UserId,
+      :Code,
+      :ExpiresIn,
+      :CreateAt,
+      :RedirectUri,
+      :State,
+      :Scope)
+OutgoingWebhooks:
+  selection:
+    SELECT * FROM OutgoingWebhooks
+  insertion:
+    INSERT INTO OutgoingWebhooks
+      (Id,
+      Token,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      CreatorId,
+      ChannelId,
+      TeamId,
+      TriggerWords,
+      CallbackURLs,
+      DisplayName,
+      Description,
+      ContentType)
+    VALUES
+      (:Id,
+      :Token,
+      :CreateAt,
+      :UpdateAt,
+      :DeleteAt,
+      :CreatorId,
+      :ChannelId,
+      :TeamId,
+      :TriggerWords,
+      :CallbackURLs,
+      :DisplayName,
+      :Description,
+      :ContentType)
+PasswordRecovery:
+  selection:
+    SELECT * FROM PasswordRecovery
+  insertion:
+    INSERT INTO PasswordRecovery
+      (UserId,
+      Code,
+      CreateAt)
+    VALUES
+      (:UserId,
+      :Code,
+      :CreateAt)
+Posts:
+  selection:
+    SELECT * FROM Posts
+  insertion:
+    INSERT INTO Posts(id, createat, updateat, deleteat, userid, channelid, rootid, parentid, originalid,
+            message, type, props, hashtags, filenames)
+    VALUES(:id, :createat, :updateat, :deleteat, :userid, :channelid, :rootid, :parentid, :originalid,
+            :message, :type, :props, :hashtags, :filenames)
+Preferences:
+  selection:
+    SELECT * FROM Preferences
+  insertion:
+    INSERT INTO Preferences
+      (UserId,
+      Category,
+      Name,
+      Value)
+    VALUES
+      (:UserId,
+      :Category,
+      :Name,
+      :Value)
+Sessions:
+  selection:
+    SELECT * FROM Sessions
+  insertion:
+    INSERT INTO Sessions
+      (Id,
+      Token,
+      CreateAt,
+      ExpiresAt,
+      LastActivityAt,
+      UserId,
+      DeviceId,
+      Roles,
+      IsOAuth,
+      Props)
+    VALUES
+      (:Id,
+      :Token,
+      :CreateAt,
+      :ExpiresAt,
+      :LastActivityAt,
+      :UserId,
+      :DeviceId,
+      :Roles,
+      :IsOAuth,
+      :Props)
+Systems:
+  selection:
+    SELECT * FROM Systems
+  insertion:
+    INSERT INTO Systems
+      (Name,
+      Value)
+    VALUES
+      (:Name,
+      :Value)
+TeamMembers:
+  selection:
+    SELECT * FROM TeamMembers
+  insertion:
+    INSERT INTO TeamMembers
+      (TeamId,
+      UserId,
+      Roles)
+    VALUES
+      (:TeamId,
+      :UserId,
+      :Roles)
+Teams:
+  selection:
+    SELECT * FROM Teams
+  insertion:
+    INSERT INTO Teams
+      (Id,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      DisplayName,
+      Name,
+      Email,
+      Type,
+      CompanyName,
+      AllowedDomains,
+      InviteId,
+      AllowOpenInvite)
+    VALUES
+      (:Id,
+      :CreateAt,
+      :UpdateAt,
+      :DeleteAt,
+      :DisplayName,
+      :Name,
+      :Email,
+      :Type,
+      :CompanyName,
+      :AllowedDomains,
+      :InviteId,
+      :AllowOpenInvite)
+Users:
+  selection:
+    SELECT * FROM Users
+  insertion:
+    INSERT INTO Users
+      (Id,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      Username,
+      Password,
+      AuthData,
+      AuthService,
+      Email,
+      EmailVerified,
+      Nickname,
+      FirstName,
+      LastName,
+      Roles,
+      LastActivityAt,
+      LastPingAt,
+      AllowMarketing,
+      Props,
+      NotifyProps,
+      ThemeProps,
+      LastPasswordUpdate,
+      LastPictureUpdate,
+      FailedAttempts,
+      Locale,
+      MfaActive,
+      MfaSecret)
+    VALUES
+      (:Id,
+      :CreateAt,
+      :UpdateAt,
+      :DeleteAt,
+      :Username,
+      :Password,
+      :AuthData,
+      :AuthService,
+      :Email,
+      :EmailVerified,
+      :Nickname,
+      :FirstName,
+      :LastName,
+      :Roles,
+      :LastActivityAt,
+      :LastPingAt,
+      :AllowMarketing,
+      :Props,
+      :NotifyProps,
+      :ThemeProps,
+      :LastPasswordUpdate,
+      :LastPictureUpdate,
+      :FailedAttempts,
+      :Locale,
+      :MfaActive,
+      :MfaSecret)

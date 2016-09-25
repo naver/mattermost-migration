@@ -1,0 +1,26 @@
+# Mysql to Postgresql
+
+database.source.driver=com.mysql.jdbc.Driver
+database.source.url=jdbc:mysql://localhost:3306/mattermost?useServerPrepStmts=false&rewriteBatchedStatements=true
+database.source.username=
+database.source.password=
+
+database.target.driver=org.postgresql.Driver
+database.target.url=jdbc:postgresql://localhost:5432/mattermost
+database.target.username=
+database.target.password=
+database.target.escape_char=
+
+
+# Postgresql to Mysql
+
+# database.source.driver=org.postgresql.Driver
+# database.source.url=jdbc:postgresql://localhost:5432/mattermost
+# database.source.username=
+# database.source.password=
+
+# database.target.driver=com.mysql.jdbc.Driver
+# database.target.url=jdbc:mysql://localhost:3306/mattermost?useServerPrepStmts=false&rewriteBatchedStatements=true
+# database.target.username=
+# database.target.password=
+# database.target.escape_char=`
