@@ -15,14 +15,18 @@
  */
 package com.navercorp.mattermost.migration.domains;
 
+import java.math.BigInteger;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class OAuthAccessData {
-	private String AuthCode;
+	private String ClientId;
+	private String UserId;
 	private String Token;
 	private String RefreshToken;
 	private String RedirectUri;
+	private BigInteger ExpiresAt;
 }

@@ -22,16 +22,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OAuthApps {
-	private String Id;
-	private String CreatorId;
-	private BigInteger CreateAt;
-	private BigInteger UpdateAt;
-	private String ClientSecret;
-	private String Name;
-	private String Description;
-	private String IconURL;
-	private String CallbackUrls;
-	private String Homepage;
-	private boolean IsTrusted;
+public class Emoji {
+	private String id;
+	private BigInteger createat;
+	private BigInteger updateat;
+	private BigInteger deleteat;
+	private String creatorid;
+	private String name;
 }

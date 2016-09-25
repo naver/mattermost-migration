@@ -15,6 +15,8 @@
  */
 package com.navercorp.mattermost.migration.domains;
 
+import java.math.BigInteger;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,4 +26,5 @@ public class TeamMembers {
 	private String TeamId;
 	private String UserId;
 	private String Roles;
+	private BigInteger DeleteAt;
 }

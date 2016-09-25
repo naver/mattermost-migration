@@ -105,6 +105,24 @@
 		</property>
 	</bean>
 
+	<bean id="databaseItemReaderEmoji"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${emoji.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Emoji"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterEmoji" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${emoji.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
 	<bean id="databaseItemReaderIncomingWebhooks"
 		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
 		<property name="dataSource" ref="sourceDatabase"/>
@@ -285,6 +303,24 @@
 		</property>
 	</bean>
 
+	<bean id="databaseItemReaderStatus"
+		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="sourceDatabase"/>
+		<property name="sql" value="${Status.selection}"/>
+		<property name="rowMapper">
+			<bean class="org.springframework.jdbc.core.BeanPropertyRowMapper"
+				  c:mappedClass="com.navercorp.mattermost.migration.domains.Status"/>
+		</property>
+	</bean>
+	<bean id="databaseItemWriterStatus" class="org.springframework.batch.item.database.JdbcBatchItemWriter"
+		  scope="step">
+		<property name="dataSource" ref="targetDatabase"/>
+		<property name="sql" value="${Status.insertion}"/>
+		<property name="itemSqlParameterSourceProvider">
+			<bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+		</property>
+	</bean>
+
 	<bean id="databaseItemReaderSystems"
 		  class="org.springframework.batch.item.database.JdbcCursorItemReader">
 		<property name="dataSource" ref="sourceDatabase"/>
@@ -394,9 +430,16 @@
 			</batch:tasklet>
 		</batch:step>
 
-		<batch:step id="migrateCompliances" next="migrateIncomingWebhooks">
+		<batch:step id="migrateCompliances" next="migrateEmoji">
 			<batch:tasklet transaction-manager="transactionManager">
 				<batch:chunk reader="databaseItemReaderCompliances" writer="databaseItemWriterCompliances"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateEmoji" next="migrateIncomingWebhooks">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderEmoji" writer="databaseItemWriterEmoji"
 							 commit-interval="1000"/>
 			</batch:tasklet>
 		</batch:step>
@@ -463,9 +506,16 @@
 			</batch:tasklet>
 		</batch:step>
 
-		<batch:step id="migrateSessions" next="migrateSystems">
+		<batch:step id="migrateSessions" next="migrateStatus">
 			<batch:tasklet transaction-manager="transactionManager">
 				<batch:chunk reader="databaseItemReaderSessions" writer="databaseItemWriterSessions"
+							 commit-interval="1000"/>
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="migrateStatus" next="migrateSystems">
+			<batch:tasklet transaction-manager="transactionManager">
+				<batch:chunk reader="databaseItemReaderStatus" writer="databaseItemWriterStatus"
 							 commit-interval="1000"/>
 			</batch:tasklet>
 		</batch:step>

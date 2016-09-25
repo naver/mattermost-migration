@@ -122,6 +122,24 @@ compliances:
       :EndAt,
       :Keywords,
       :Emails)
+emoji:
+  selection:
+    SELECT * FROM Emoji
+  insertion:
+    INSERT INTO Emoji
+      (Id,
+      CreateAt,
+      UpdateAt,
+      DeleteAt,
+      CreatorId,
+      Name)
+    VALUES
+      (:id,
+      :createat,
+      :updateat,
+      :deleteat,
+      :creatorid,
+      :name)
 incomingWebhooks:
   selection:
     SELECT * FROM IncomingWebhooks
@@ -163,15 +181,19 @@ OAuthAccessData:
     SELECT * FROM OAuthAccessData
   insertion:
     INSERT INTO OAuthAccessData
-      (AuthCode,
+      (ClientId,
+      UserId,
       Token,
       RefreshToken,
-      RedirectUri)
+      RedirectUri,
+      ExpiresAt)
     VALUES
-      (:AuthCode,
+      (:ClientId,
+      :UserId,
       :Token,
       :RefreshToken,
-      :RedirectUri)
+      :RedirectUri,
+      :ExpiresAt)
 OAuthApps:
   selection:
     SELECT * FROM OAuthApps
@@ -184,8 +206,10 @@ OAuthApps:
       ClientSecret,
       Name,
       Description,
+      IconURL,
       CallbackUrls,
-      Homepage)
+      Homepage,
+      IsTrusted)
     VALUES
       (:Id,
       :CreatorId,
@@ -194,8 +218,10 @@ OAuthApps:
       :ClientSecret,
       :Name,
       :Description,
+      :IconURL,
       :CallbackUrls,
-      :Homepage)
+      :Homepage,
+      :IsTrusted)
 OAuthAuthData:
   selection:
     SELECT * FROM OAuthAuthData
@@ -232,6 +258,7 @@ OutgoingWebhooks:
       ChannelId,
       TeamId,
       TriggerWords,
+      TriggerWhen,
       CallbackURLs,
       DisplayName,
       Description,
@@ -246,6 +273,7 @@ OutgoingWebhooks:
       :ChannelId,
       :TeamId,
       :TriggerWords,
+      :TriggerWhen,
       :CallbackURLs,
       :DisplayName,
       :Description,
@@ -310,6 +338,18 @@ Sessions:
       :Roles,
       :IsOAuth,
       :Props)
+Status:
+  selection:
+    SELECT * FROM Status
+  insertion:
+    INSERT INTO Status
+      (UserId,
+      Status,
+      LastActivityAt)
+    VALUES
+      (:UserId,
+      :Status,
+      :LastActivityAt)
 Systems:
   selection:
     SELECT * FROM Systems
@@ -327,11 +367,13 @@ TeamMembers:
     INSERT INTO TeamMembers
       (TeamId,
       UserId,
-      Roles)
+      Roles,
+      DeleteAt)
     VALUES
       (:TeamId,
       :UserId,
-      :Roles)
+      :Roles,
+      :DeleteAt)
 Teams:
   selection:
     SELECT * FROM Teams
@@ -381,12 +423,9 @@ Users:
       FirstName,
       LastName,
       Roles,
-      LastActivityAt,
-      LastPingAt,
       AllowMarketing,
       Props,
       NotifyProps,
-      ThemeProps,
       LastPasswordUpdate,
       LastPictureUpdate,
       FailedAttempts,
@@ -408,12 +447,9 @@ Users:
       :FirstName,
       :LastName,
       :Roles,
-      :LastActivityAt,
-      :LastPingAt,
       :AllowMarketing,
       :Props,
       :NotifyProps,
-      :ThemeProps,
       :LastPasswordUpdate,
       :LastPictureUpdate,
       :FailedAttempts,

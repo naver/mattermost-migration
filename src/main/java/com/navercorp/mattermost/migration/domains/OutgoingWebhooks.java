@@ -32,6 +32,7 @@ public class OutgoingWebhooks {
 	private String ChannelId;
 	private String TeamId;
 	private String TriggerWords;
+	private BigInteger TriggerWhen;
 	private String CallbackURLs;
 	private String DisplayName;
 	private String Description;
